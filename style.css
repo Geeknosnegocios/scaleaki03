@@ -321,6 +321,11 @@ ul { list-style: none; }
   color: #fff; font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
   letter-spacing: 0.07em; text-align: center; padding: 8px 0;
 }
+.plan-popular.eco {
+  background: linear-gradient(135deg, #a3e635, #4d7c0f);
+  color: #0a1a06;
+}
+.plan-sub { font-size: 0.82rem; color: var(--color-text-muted); margin: -8px 0 14px; font-weight: 500; }
 .plan-body { padding: 32px 28px; flex: 1; display: flex; flex-direction: column; text-align: center; }
 .plan-name {
   font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
