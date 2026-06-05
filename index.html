@@ -738,6 +738,28 @@
     </div>
   </footer>
 
+  <!-- ═══ EXIT-INTENT POPUP ═══ -->
+  <div class="exit-overlay" id="exitPopup" aria-hidden="true">
+    <div class="exit-modal" role="dialog" aria-modal="true" aria-labelledby="exitTitle">
+      <button class="exit-close" id="exitClose" aria-label="Fechar">
+        <i data-lucide="x" style="width:20px;height:20px;"></i>
+      </button>
+      <div class="exit-badge"><i data-lucide="hand" style="width:13px;height:13px;"></i> Espera aí</div>
+      <h3 class="exit-title" id="exitTitle">Antes de você ir embora...</h3>
+      <p class="exit-text">Os criativos que estão escalando agora não esperam. Comece hoje pelo plano mensal, sem fidelidade — e cancele quando quiser.</p>
+      <div class="exit-price">
+        <span class="exit-price-val">R$84</span>
+        <span class="exit-price-per">/mês</span>
+      </div>
+      <div class="exit-price-note">Sem fidelidade · Cancele quando quiser · Acesso completo</div>
+      <a href="#" class="exit-cta" id="exitCta">
+        <i data-lucide="zap" style="width:16px;height:16px;"></i>
+        Garantir meu acesso agora
+      </a>
+      <button class="exit-decline" id="exitDecline">Não, prefiro perder as ofertas</button>
+    </div>
+  </div>
+
   <script>
     // Lucide icons
     lucide.createIcons();
@@ -774,6 +796,47 @@
         }
       });
     });
+
+    // Exit-intent popup
+    (function() {
+      const overlay = document.getElementById('exitPopup');
+      if (!overlay) return;
+      let shown = sessionStorage.getItem('exitShown') === '1';
+
+      function openPopup() {
+        if (shown) return;
+        shown = true;
+        sessionStorage.setItem('exitShown', '1');
+        overlay.classList.add('is-open');
+        overlay.setAttribute('aria-hidden', 'false');
+      }
+      function closePopup() {
+        overlay.classList.remove('is-open');
+        overlay.setAttribute('aria-hidden', 'true');
+      }
+
+      // Desktop: mouse leaves viewport from the top
+      document.addEventListener('mouseout', function(e) {
+        if (!e.relatedTarget && e.clientY <= 0) openPopup();
+      });
+
+      // Mobile: fast scroll-up near the top (back-to-leave gesture)
+      let lastY = window.scrollY;
+      window.addEventListener('scroll', function() {
+        const y = window.scrollY;
+        if (lastY - y > 18 && y < 320) openPopup();
+        lastY = y;
+      }, { passive: true });
+
+      document.getElementById('exitClose').addEventListener('click', closePopup);
+      document.getElementById('exitDecline').addEventListener('click', closePopup);
+      overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) closePopup();
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closePopup();
+      });
+    })();
   </script>
 
 </body>
